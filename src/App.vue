@@ -12,7 +12,7 @@
             <v-container>
               <v-row class="mx-0 d-flex justify-center">
                 <img
-                  :src="`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/back/${getId(
+                  :src="`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${getId(
                     pokemon
                   )}.png`"
                   :alt="pokemon.name"
@@ -33,7 +33,7 @@
             <v-row class="d-flex justify-center">
               <v-col cols="4">
                 <img
-                  :src="`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/back/${selectedPokemon.id}.png`"
+                  :src="`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${selectedPokemon.id}.png`"
                   :alt="selectedPokemon.name"
                   class="imgPokemonDialog"
                 />
@@ -42,6 +42,15 @@
                 <h1>
                   {{ getName(selectedPokemon) }}
                 </h1>
+                <v-chip
+                  class="mr-2"
+                  label
+                  v-for="typePokemon in selectedPokemon.types"
+                  :key="typePokemon.slot"
+                >
+                  Tipo: {{ typePokemon.type.name }}
+                </v-chip>
+                <v-divider class="my-4"> </v-divider>
                 <v-chip label class="">
                   Altura: {{ selectedPokemon.height * 2.54 }}cm
                 </v-chip>
@@ -75,12 +84,10 @@ export default {
   }),
   components: {},
   created() {
-    axios
-      .get("https://pokeapi.co/api/v2/pokemon?limit=48")
-      .then((response) => {
-        this.pokemons = response.data.results;
-        console.log(response.data);
-      });
+    axios.get("https://pokeapi.co/api/v2/pokemon?limit=50").then((response) => {
+      this.pokemons = response.data.results;
+      console.log(response.data);
+    });
   },
   methods: {
     getId(pokemon) {
@@ -124,11 +131,10 @@ export default {
   min-height: 100vh;
 }
 
-.imgPokemon{
+.imgPokemon {
   width: 45%;
 }
-.imgPokemonDialog{
+.imgPokemonDialog {
   width: 80%;
 }
-
 </style>
